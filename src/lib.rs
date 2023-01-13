@@ -24,6 +24,11 @@ impl Dictionary {
             words: dictionary.clone()
         }
     }
+
+    /// Add a word to the dictionary (or  update its occurrences)
+    pub fn add(&mut self, word: String){
+        *self.words.entry(word).or_insert(0_u64) += 1_u64;
+    }
 }
 
 #[cfg(test)]
@@ -68,5 +73,22 @@ mod dictionary_contains_test {
 
         let dictionary = Dictionary::from(custom_dictionary);
         assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
+    }
+}
+
+#[cfg(test)]
+mod dictionary_add_test {
+    use super::*;
+
+    #[test]
+    fn should_be_able_to_add_word() {
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from("burung"));
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
+        assert_eq!(dictionary.words.len(), 1);
+
+        dictionary.add(String::from("kucing"));
+        assert_eq!(dictionary.contains(String::from("kucing").as_str()), true);
+        assert_eq!(dictionary.words.len(), 2);
     }
 }
