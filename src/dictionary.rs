@@ -27,10 +27,11 @@ impl Dictionary {
 
     /// Add a word to the dictionary (or update its occurrences)
     pub fn add(&mut self, word: String){
+        let word = word.trim();
         if word == "" {
             return;
         }
-        *self.words.entry(word).or_insert(0_usize) += 1_usize;
+        *self.words.entry(word.to_string()).or_insert(0_usize) += 1_usize;
     }
 
     /// Returns the length of the word dictionary
@@ -108,6 +109,15 @@ mod dictionary_add_test {
     #[test]
     fn should_not_add_whitespace() {
         todo!()
+    }
+
+    #[test]
+    fn should_trim_before_add() {
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from(" burung "));
+        assert_eq!(dictionary.contains(String::from(" burung ").as_str()), false);
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
+        assert_eq!(dictionary.words.len(), 1);
     }
 }
 
