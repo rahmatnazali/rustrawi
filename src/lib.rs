@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+/// A dictionary structure to track word occurrences
 struct Dictionary {
     words: HashMap<String, u64>,
 }
@@ -30,8 +31,6 @@ mod dictionary_new_test {
         assert_eq!(dictionary.words.len(), 0);
     }
 }
-
-
 
 #[cfg(test)]
 mod dictionary_contains_test {
