@@ -103,12 +103,16 @@ mod dictionary_add_test {
 
     #[test]
     fn should_not_add_empty_string() {
-        todo!()
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from(""));
+        assert_eq!(dictionary.words.len(), 0);
     }
 
     #[test]
     fn should_not_add_whitespace() {
-        todo!()
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from(" "));
+        assert_eq!(dictionary.words.len(), 0);
     }
 
     #[test]
