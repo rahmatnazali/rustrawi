@@ -32,7 +32,7 @@ impl Dictionary {
     }
 
     /// Add a word to the dictionary (or update its occurrences)
-    pub fn add(&mut self, word: String){
+    pub fn add(&mut self, word: String) {
         let word = word.trim();
         if word == "" {
             return;
