@@ -14,7 +14,26 @@ impl Dictionary {
             None => false
         }
     }
+
+    pub fn new() -> Self {
+        Self {
+            words: HashMap::new()
+        }
+    }
 }
+
+#[cfg(test)]
+mod dictionary_new_test {
+    use super::*;
+
+    #[test]
+    fn should_generate_new_instance() {
+        let dictionary = Dictionary::new();
+        assert_eq!(dictionary.words.len(), 0);
+    }
+}
+
+
 
 #[cfg(test)]
 mod dictionary_contains_test {
