@@ -25,8 +25,11 @@ impl Dictionary {
         }
     }
 
-    /// Add a word to the dictionary (or  update its occurrences)
+    /// Add a word to the dictionary (or update its occurrences)
     pub fn add(&mut self, word: String){
+        if word == "" {
+            return;
+        }
         *self.words.entry(word).or_insert(0_usize) += 1_usize;
     }
 
