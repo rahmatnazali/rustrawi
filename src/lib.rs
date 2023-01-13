@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
 /// A dictionary structure to track word occurrences
-struct Dictionary {
-    words: HashMap<String, u64>,
+pub struct Dictionary {
+    words: HashMap<String, usize>,
 }
 
 impl Dictionary {
@@ -19,7 +19,7 @@ impl Dictionary {
     }
 
     /// Initialize Dictionary from a custom hashmap
-    pub fn from(dictionary: HashMap<String, u64>) -> Self {
+    pub fn from(dictionary: HashMap<String, usize>) -> Self {
         Self {
             words: dictionary.clone()
         }
@@ -27,7 +27,7 @@ impl Dictionary {
 
     /// Add a word to the dictionary (or  update its occurrences)
     pub fn add(&mut self, word: String){
-        *self.words.entry(word).or_insert(0_u64) += 1_u64;
+        *self.words.entry(word).or_insert(0_usize) += 1_usize;
     }
 }
 
@@ -48,7 +48,7 @@ mod dictionary_from_test {
 
     #[test]
     fn should_instantiate_with_custom_hashmap() {
-        let mut custom_dictionary: HashMap<String, u64> = HashMap::new();
+        let mut custom_dictionary: HashMap<String, usize> = HashMap::new();
         custom_dictionary.insert(String::from("burung"), 1);
 
         let dictionary = Dictionary::from(custom_dictionary);
@@ -68,7 +68,7 @@ mod dictionary_contains_test {
 
     #[test]
     fn should_return_true_if_string_is_contained() {
-        let mut custom_dictionary: HashMap<String, u64> = HashMap::new();
+        let mut custom_dictionary: HashMap<String, usize> = HashMap::new();
         custom_dictionary.insert(String::from("burung"), 1);
 
         let dictionary = Dictionary::from(custom_dictionary);
