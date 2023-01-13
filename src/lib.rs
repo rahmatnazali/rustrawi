@@ -63,12 +63,10 @@ mod dictionary_contains_test {
 
     #[test]
     fn should_return_true_if_string_is_contained() {
-        let mut words: HashMap<String, u64> = HashMap::new();
-        words.insert(String::from("burung"), 1);
+        let mut custom_dictionary: HashMap<String, u64> = HashMap::new();
+        custom_dictionary.insert(String::from("burung"), 1);
 
-        let dictionary = Dictionary {
-            words
-        };
+        let dictionary = Dictionary::from(custom_dictionary);
         assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
     }
 }
