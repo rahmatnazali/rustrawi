@@ -99,6 +99,16 @@ mod dictionary_add_test {
         assert_eq!(dictionary.contains(String::from("kucing").as_str()), true);
         assert_eq!(dictionary.words.len(), 2);
     }
+
+    #[test]
+    fn should_not_add_empty_string() {
+        todo!()
+    }
+
+    #[test]
+    fn should_not_add_whitespace() {
+        todo!()
+    }
 }
 
 #[cfg(test)]
