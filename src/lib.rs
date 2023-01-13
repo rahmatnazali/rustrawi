@@ -11,6 +11,7 @@ impl Dictionary {
         self.words.contains_key(word)
     }
 
+    /// Initialize empty Dictionary
     pub fn new() -> Self {
         Self {
             words: HashMap::new()
