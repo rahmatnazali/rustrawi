@@ -29,6 +29,11 @@ impl Dictionary {
     pub fn add(&mut self, word: String){
         *self.words.entry(word).or_insert(0_usize) += 1_usize;
     }
+
+    /// Returns the length of the word dictionary
+    pub fn len(&self) -> usize {
+        self.words.len()
+    }
 }
 
 #[cfg(test)]
@@ -90,5 +95,20 @@ mod dictionary_add_test {
         dictionary.add(String::from("kucing"));
         assert_eq!(dictionary.contains(String::from("kucing").as_str()), true);
         assert_eq!(dictionary.words.len(), 2);
+    }
+}
+
+#[cfg(test)]
+mod dictionary_len_test {
+    use super::*;
+
+    #[test]
+    fn should_be_able_to_return_dictionary_length() {
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from("burung"));
+        assert_eq!(dictionary.len(), 1);
+
+        dictionary.add(String::from("kucing"));
+        assert_eq!(dictionary.len(), 2);
     }
 }
