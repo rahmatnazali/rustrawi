@@ -36,9 +36,7 @@ mod dictionary_contains_test {
 
     #[test]
     fn should_return_false_if_string_is_not_contained() {
-        let dictionary = Dictionary {
-            words: HashMap::new()
-        };
+        let dictionary = Dictionary::new();
         assert_eq!(dictionary.contains(String::from("burung").as_str()), false);
     }
 
