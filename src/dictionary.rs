@@ -25,6 +25,12 @@ impl Dictionary {
         }
     }
 
+    /// Initialize dictionary from a text file
+    pub fn from_file(file_path: String, delimiter: Option<String>) {
+        let delimiter = delimiter.unwrap_or(String::from("\n"));
+        todo!("implement opening a file and load the list of words from it")
+    }
+
     /// Add a word to the dictionary (or update its occurrences)
     pub fn add(&mut self, word: String){
         let word = word.trim();
@@ -32,6 +38,22 @@ impl Dictionary {
             return;
         }
         *self.words.entry(word.to_string()).or_insert(0_usize) += 1_usize;
+    }
+
+    /// Add list of word to the dictionary
+    pub fn add_from_list(&mut self, words: Vec<String>) {
+        for word in words {
+            self.add(word);
+        }
+    }
+
+    /// Remove a word from dictionary
+    pub fn remove(&mut self, word: String) {
+        let word = word.trim();
+        if word == "" {
+            return;
+        }
+        self.words.remove(word);
     }
 
     /// Returns the length of the word dictionary
@@ -62,6 +84,11 @@ mod dictionary_from_test {
 
         let dictionary = Dictionary::from(custom_dictionary);
         assert_eq!(dictionary.contains("burung"), true);
+    }
+
+    #[test]
+    fn should_instantiate_from_file() {
+        let dictionary = Dictionary::from_file(String::from("file.txt"), None);
     }
 }
 
@@ -122,6 +149,31 @@ mod dictionary_add_test {
         assert_eq!(dictionary.contains(String::from(" burung ").as_str()), false);
         assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
         assert_eq!(dictionary.words.len(), 1);
+    }
+
+    #[test]
+    fn should_add_from_list() {
+        todo!("implement add_from_list")
+    }
+}
+
+#[cfg(test)]
+mod dictionary_remove_test {
+    use super::*;
+
+    #[test]
+    fn should_remove_entry() {
+        todo!()
+    }
+
+    #[test]
+    fn should_return_on_empty_string() {
+        todo!()
+    }
+
+    #[test]
+    fn should_return_on_whitespace() {
+        todo!()
     }
 }
 
