@@ -17,6 +17,13 @@ impl Dictionary {
             words: HashMap::new()
         }
     }
+
+    /// Initialize Dictionary from a custom hashmap
+    pub fn from(dictionary: HashMap<String, u64>) -> Self {
+        Self {
+            words: dictionary.clone()
+        }
+    }
 }
 
 #[cfg(test)]
@@ -27,6 +34,20 @@ mod dictionary_new_test {
     fn should_generate_new_instance() {
         let dictionary = Dictionary::new();
         assert_eq!(dictionary.words.len(), 0);
+    }
+}
+
+#[cfg(test)]
+mod dictionary_from_test {
+    use super::*;
+
+    #[test]
+    fn should_instantiate_with_custom_hashmap() {
+        let mut custom_dictionary: HashMap<String, u64> = HashMap::new();
+        custom_dictionary.insert(String::from("burung"), 1);
+
+        let dictionary = Dictionary::from(custom_dictionary);
+        assert_eq!(dictionary.contains("burung"), true);
     }
 }
 
