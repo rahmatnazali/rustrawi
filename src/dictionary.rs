@@ -1,3 +1,7 @@
+//! dictionary.rs
+//!
+//! Contains the implementation of word dictionary and its occurrences
+
 use std::collections::HashMap;
 use std::io;
 use std::fs::File;
@@ -9,7 +13,7 @@ pub struct Dictionary {
 }
 
 impl Dictionary {
-    /// Checks whether the dictionary contains the word `key`
+    /// Checks whether the dictionary contains the given word
     pub fn contains(&self, word: &str) -> bool {
         self.words.contains_key(word)
     }
@@ -21,7 +25,7 @@ impl Dictionary {
         }
     }
 
-    /// Initialize Dictionary from a custom hashmap
+    /// Initialize the dictionary from a custom hashmap
     pub fn from(hashmap: HashMap<String, usize>) -> Self {
         Self {
             words: hashmap.clone()
