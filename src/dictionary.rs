@@ -48,12 +48,17 @@ impl Dictionary {
     }
 
     /// Remove a word from dictionary
-    pub fn remove(&mut self, word: String) {
+    /// Returns the word if it is removed successfully
+    /// Returns None if the dictionary did not contains the word
+    pub fn remove(&mut self, word: String) -> Option<String>{
         let word = word.trim();
         if word == "" {
-            return;
+            return None
         }
-        self.words.remove(word);
+        match self.words.remove(word) {
+            Some(_occurrence) => Some(word.to_string()),
+            None => None
+        }
     }
 
     /// Returns the length of the word dictionary
@@ -163,17 +168,51 @@ mod dictionary_remove_test {
 
     #[test]
     fn should_remove_entry() {
-        todo!()
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from("burung"));
+        dictionary.add(String::from("kucing"));
+        assert_eq!(dictionary.words.len(), 2);
+        let result: Option<String> = dictionary.remove(String::from("burung"));
+        assert_eq!(result.is_some(), true);
+        assert_eq!(dictionary.words.len(), 1);
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), false);
+
+        // try to re-delete the same word
+        let result: Option<String> = dictionary.remove(String::from("burung"));
+        assert_eq!(result.is_some(), false);
+        assert_eq!(dictionary.words.len(), 1);
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), false);
     }
 
     #[test]
-    fn should_return_on_empty_string() {
-        todo!()
+    fn should_return_none_on_empty_string() {
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from("burung"));
+        assert_eq!(dictionary.words.len(), 1);
+        let result: Option<String> = dictionary.remove(String::from(""));
+        assert_eq!(result.is_none(), true);
+        assert_eq!(dictionary.words.len(), 1);
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
     }
 
     #[test]
-    fn should_return_on_whitespace() {
-        todo!()
+    fn should_return_none_on_whitespace() {
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from("burung"));
+        assert_eq!(dictionary.words.len(), 1);
+        let result: Option<String> = dictionary.remove(String::from(" "));
+        assert_eq!(result.is_none(), true);
+        assert_eq!(dictionary.words.len(), 1);
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
+    }
+
+    #[test]
+    fn should_return_none_on_not_found() {
+        let mut dictionary = Dictionary::new();
+        dictionary.add(String::from("burung"));
+        assert_eq!(dictionary.words.len(), 1);
+        let result: Option<String> = dictionary.remove(String::from("kucing"));
+        assert_eq!(result.is_none(), true);
     }
 }
 
