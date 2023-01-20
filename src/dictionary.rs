@@ -19,6 +19,14 @@ impl Dictionary {
     }
 
     /// Initialize empty Dictionary
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use rustrawi::dictionary::Dictionary;
+    /// let dictionary = Dictionary::new();
+    /// assert_eq!(dictionary.len(), 0);
+    /// ```
     pub fn new() -> Self {
         Self {
             words: HashMap::new()
@@ -45,6 +53,7 @@ impl Dictionary {
         dictionary
     }
 
+    /// Read line of string from a given filename
     fn read_lines_from_file<P> (filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
     where P: AsRef<std::path::Path>, {
         let file = File::open(filename)?;
@@ -52,6 +61,14 @@ impl Dictionary {
     }
 
     /// Initialize dictionary from a text file
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use rustrawi::dictionary::Dictionary;
+    /// let dictionary = Dictionary::from_file("tests/example_word_list");
+    /// assert_eq!(dictionary.len(), 3);
+    /// ```
     pub fn from_file(filename: &str) -> Self {
         let mut dictionary = Dictionary::new();
         match Dictionary::read_lines_from_file(&filename) {
@@ -68,6 +85,15 @@ impl Dictionary {
     }
 
     /// Add a word to the dictionary (or update its occurrences)
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use rustrawi::dictionary::Dictionary;
+    /// let mut dictionary = Dictionary::new();
+    /// dictionary.add(String::from("burung"));
+    /// assert_eq!(dictionary.contains("burung"), true);
+    /// ```
     pub fn add(&mut self, word: String) {
         let word = word.trim();
         if word == "" {
