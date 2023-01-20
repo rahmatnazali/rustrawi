@@ -41,9 +41,9 @@ impl Dictionary {
     }
 
     /// Add list of word to the dictionary
-    pub fn add_from_list(&mut self, words: Vec<String>) {
+    pub fn add_from_list(&mut self, words: Vec<&str>) {
         for word in words {
-            self.add(word);
+            self.add(word.to_string());
         }
     }
 
@@ -158,7 +158,13 @@ mod dictionary_add_test {
 
     #[test]
     fn should_add_from_list() {
-        todo!("implement add_from_list")
+        let mut dictionary = Dictionary::new();
+        let word_list = vec!["burung", "kucing", "ayam"];
+        dictionary.add_from_list(word_list);
+        assert_eq!(dictionary.words.len(), 3);
+        assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
+        assert_eq!(dictionary.contains(String::from("kucing").as_str()), true);
+        assert_eq!(dictionary.contains(String::from("ayam").as_str()), true);
     }
 }
 
