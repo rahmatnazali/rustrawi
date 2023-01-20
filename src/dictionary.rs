@@ -1,4 +1,7 @@
 use std::collections::HashMap;
+use std::io;
+use std::fs::File;
+use std::io::BufRead;
 
 /// A dictionary structure to track word occurrences
 pub struct Dictionary {
@@ -19,16 +22,29 @@ impl Dictionary {
     }
 
     /// Initialize Dictionary from a custom hashmap
-    pub fn from(dictionary: HashMap<String, usize>) -> Self {
+    pub fn from(hashmap: HashMap<String, usize>) -> Self {
         Self {
-            words: dictionary.clone()
+            words: hashmap.clone()
         }
     }
 
+    fn read_lines_from_file<P> (filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+    where P: AsRef<std::path::Path>, {
+        let file = File::open(filename)?;
+        Ok(io::BufReader::new(file).lines())
+    }
+
     /// Initialize dictionary from a text file
-    pub fn from_file(file_path: String, delimiter: Option<String>) {
-        let delimiter = delimiter.unwrap_or(String::from("\n"));
-        todo!("implement opening a file and load the list of words from it")
+    pub fn from_file(filename: &str) -> Self {
+        let mut dictionary = Dictionary::new();
+        if let Ok(lines) = Dictionary::read_lines_from_file(&filename) {
+            for line in lines {
+                if let Ok(value) = line {
+                    dictionary.add(value);
+                }
+            }
+        }
+        dictionary
     }
 
     /// Add a word to the dictionary (or update its occurrences)
@@ -93,7 +109,11 @@ mod dictionary_from_test {
 
     #[test]
     fn should_instantiate_from_file() {
-        let dictionary = Dictionary::from_file(String::from("file.txt"), None);
+        let dictionary = Dictionary::from_file("tests/example_word_list");
+        assert_eq!(dictionary.len(), 3);
+        assert_eq!(dictionary.contains("burung"), true);
+        assert_eq!(dictionary.contains("kucing"), true);
+        assert_eq!(dictionary.contains("ayam"), true);
     }
 }
 
