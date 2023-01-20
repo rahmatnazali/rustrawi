@@ -37,12 +37,15 @@ impl Dictionary {
     /// Initialize dictionary from a text file
     pub fn from_file(filename: &str) -> Self {
         let mut dictionary = Dictionary::new();
-        if let Ok(lines) = Dictionary::read_lines_from_file(&filename) {
-            for line in lines {
-                if let Ok(value) = line {
-                    dictionary.add(value);
+        match Dictionary::read_lines_from_file(&filename) {
+            Ok(lines) => {
+                for line in lines {
+                    if let Ok(value) = line {
+                        dictionary.add(value);
+                    }
                 }
-            }
+            },
+            Err(e) => panic!("{}", e)
         }
         dictionary
     }
@@ -114,6 +117,12 @@ mod dictionary_from_test {
         assert_eq!(dictionary.contains("burung"), true);
         assert_eq!(dictionary.contains("kucing"), true);
         assert_eq!(dictionary.contains("ayam"), true);
+    }
+
+    #[test]
+    #[should_panic(expected = "No such file or directory (os error 2)")]
+    fn should_panic_if_instantiating_from_invalid_file() {
+        let _dictionary = Dictionary::from_file("tests/invalid_file");
     }
 }
 
