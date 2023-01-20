@@ -25,11 +25,24 @@ impl Dictionary {
         }
     }
 
-    /// Initialize the dictionary from a custom hashmap
-    pub fn from(hashmap: HashMap<String, usize>) -> Self {
-        Self {
-            words: hashmap.clone()
+    /// Initialize the dictionary from a custom String collection
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use rustrawi::dictionary::Dictionary;
+    /// let word_list = vec!["burung", "ayam", "kucing"];
+    /// let mut dictionary = Dictionary::from_list(word_list);
+    /// assert_eq!(dictionary.contains("burung"), true);
+    /// assert_eq!(dictionary.contains("ayam"), true);
+    /// assert_eq!(dictionary.contains("kucing"), true);
+    /// ```
+    pub fn from_list(word_list: Vec<&str>) -> Self {
+        let mut dictionary = Dictionary::new();
+        for word in word_list {
+            dictionary.add(word.to_string())
         }
+        dictionary
     }
 
     fn read_lines_from_file<P> (filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
@@ -106,11 +119,9 @@ mod dictionary_from_test {
     use super::*;
 
     #[test]
-    fn should_instantiate_with_custom_hashmap() {
-        let mut custom_dictionary: HashMap<String, usize> = HashMap::new();
-        custom_dictionary.insert(String::from("burung"), 1);
-
-        let dictionary = Dictionary::from(custom_dictionary);
+    fn should_instantiate_with_custom_string_collection() {
+        let word_list = vec!["burung", "ayam", "kucing"];
+        let dictionary = Dictionary::from_list(word_list);
         assert_eq!(dictionary.contains("burung"), true);
     }
 
@@ -142,10 +153,8 @@ mod dictionary_contains_test {
 
     #[test]
     fn should_return_true_if_string_is_contained() {
-        let mut custom_dictionary: HashMap<String, usize> = HashMap::new();
-        custom_dictionary.insert(String::from("burung"), 1);
-
-        let dictionary = Dictionary::from(custom_dictionary);
+        let word_list = vec!["burung", "ayam", "kucing"];
+        let dictionary = Dictionary::from_list(word_list);
         assert_eq!(dictionary.contains(String::from("burung").as_str()), true);
     }
 }
