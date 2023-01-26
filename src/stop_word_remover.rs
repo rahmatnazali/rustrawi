@@ -1,7 +1,7 @@
 use crate::dictionary::Dictionary;
 
 struct StopWordRemover {
-    stop_word_dictionary: Dictionary
+    stop_word_dictionary: Dictionary,
 }
 
 impl StopWordRemover {
