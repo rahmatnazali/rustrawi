@@ -15,13 +15,13 @@ impl StopWordRemover {
 
     /// Remove stop word.
     pub fn remove(&self, text: String) -> String {
-        todo!();
-        let mut splitted: _ = text.split_whitespace().into_iter().filter(|x| {
-            println!("{}", x);
-            true
-        }).collect();
-        println!("{:?}", splitted);
-        return String::from("")
+        let filtered_words: Vec<_> = text.split_whitespace().into_iter().filter(
+            |x| {
+                !self.stop_word_dictionary.contains(x)
+            }
+        ).collect::<_>();
+        let joined_string = filtered_words.join(" ");
+        joined_string
     }
 }
 
