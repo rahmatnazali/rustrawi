@@ -15,7 +15,7 @@ pub struct Dictionary {
 impl Dictionary {
     /// Checks whether the dictionary contains the given word
     pub fn contains(&self, word: &str) -> bool {
-        self.words.contains_key(word)
+        self.words.contains_key(word.to_lowercase().as_str())
     }
 
     /// Initialize empty Dictionary
