@@ -1,14 +1,14 @@
 use crate::dictionary::Dictionary;
 
 pub struct StopWordRemover {
-    stop_word_dictionary: Dictionary,
+    dictionary: Dictionary,
 }
 
 impl StopWordRemover {
     /// Initialize StopWordRemover with default stop word dictionary.
     pub fn new() -> Self {
         Self {
-            stop_word_dictionary: Dictionary::from_list(
+            dictionary: Dictionary::from_list(
                 vec![
                     "yang", "untuk", "pada", "ke", "para", "namun", "menurut", "antara", "dia",
                     "dua", "ia", "seperti", "jika", "jika", "sehingga", "kembali", "dan", "tidak",
@@ -34,7 +34,7 @@ impl StopWordRemover {
     /// Initialize StopWordRemover with given stop word dictionary.
     pub fn from(stop_word_dictionary: Dictionary) -> Self {
         Self {
-            stop_word_dictionary
+            dictionary: stop_word_dictionary
         }
     }
 
@@ -42,7 +42,7 @@ impl StopWordRemover {
     pub fn remove(&self, text: String) -> String {
         let filtered_words: Vec<_> = text.split_whitespace().into_iter().filter(
             |x| {
-                !self.stop_word_dictionary.contains(x)
+                !self.dictionary.contains(x)
             }
         ).collect::<_>();
         let joined_string = filtered_words.join(" ");
