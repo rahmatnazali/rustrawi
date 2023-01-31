@@ -95,7 +95,7 @@ impl Dictionary {
     /// assert_eq!(dictionary.contains("burung"), true);
     /// ```
     pub fn add(&mut self, word: String) {
-        let word = word.trim();
+        let word = word.trim().to_lowercase();
         if word == "" {
             return;
         }
