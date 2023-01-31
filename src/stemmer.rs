@@ -41,9 +41,9 @@ impl Stemmer {
     /// - `r"( +)"`
     fn normalize_text(&self, text: String) -> String {
         let lowercase_text = text.to_lowercase();
-        let alphabet_only_result = self.re_alphabet.replace_all(&lowercase_text, " ");
-        let multiple_whitespace_removed = self.re_whitespaces.replace_all(&alphabet_only_result, " ");
-        multiple_whitespace_removed.trim().to_string()
+        let alphabet_only = self.re_alphabet.replace_all(&lowercase_text, " ");
+        let single_whitespace_only = self.re_whitespaces.replace_all(&alphabet_only, " ");
+        single_whitespace_only.trim().to_string()
     }
 }
 
