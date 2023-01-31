@@ -64,6 +64,29 @@ impl Stemmer {
         let single_whitespace_only = self.re_whitespaces.replace_all(&alphabet_only, " ");
         single_whitespace_only.trim().to_string()
     }
+
+    /// Stem the given text.
+    pub fn stem(&self, text: String) -> String {
+        let normalized_text = self.normalize_text(text);
+        let words = normalized_text.split(" ");
+
+        let stemmed_words: Vec<&str> = words.into_iter().map(|word| {
+            if self.is_plural(word) {
+                self.stem_plural_word(word)
+            } else {
+                self.stem_singular_word(word)
+            }
+        }).collect();
+        stemmed_words.join(" ")
+    }
+
+    fn stem_singular_word(&self, word: &str) -> String {
+        todo!()
+    }
+
+    fn stem_plural_word(&self, word: &str) -> String {
+        todo!()
+    }
 }
 
 #[cfg(test)]
@@ -120,5 +143,17 @@ mod is_plural_test {
         assert_eq!(stemmer.is_plural("kucing - kucing-nya"), true);
         assert_eq!(stemmer.is_plural("kucing-kucing-ku"), true);
         assert_eq!(stemmer.is_plural("kucing - kucing-ku"), true);
+    }
+}
+
+#[cfg(test)]
+mod stemmer_test {
+    use super::*;
+    
+    #[test]
+    fn should_a() {
+        let stemmer = Stemmer::new();
+        let result = stemmer.stem(String::from("kucing, anjing, ayam"));
+        println!("{}", result);
     }
 }
