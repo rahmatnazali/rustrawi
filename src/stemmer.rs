@@ -37,8 +37,8 @@ impl Stemmer {
     /// Removes symbols & characters other than alphabet
     ///
     /// Text is applied with two regex rule:
-    /// - `r"/[^a-z0-9 -]/im"`
-    /// - `r"/( +)/im"`
+    /// - `r"[^a-z0-9 -]"`
+    /// - `r"( +)"`
     fn normalize_text(&self, text: String) -> String {
         let lowercase_text = text.to_lowercase();
         let alphabet_only_result = self.re_alphabet.replace_all(&lowercase_text, " ");
