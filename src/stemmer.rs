@@ -3,13 +3,17 @@ use crate::dictionary::Dictionary;
 
 pub struct Stemmer {
     dictionary: Dictionary,
+    re_alphabet: Regex,
+    re_whitespaces: Regex,
+    re_plural: Regex
 }
 
 impl Stemmer {
     /// Initialize Stemmer with default dictionary
     pub fn new() -> Self {
         Self {
-            dictionary: Dictionary::from_file("src/data/kata-dasar.txt")
+            dictionary: Dictionary::from_file("src/data/kata-dasar.txt"),
+            ..Self::empty()
         }
     }
 
@@ -18,7 +22,10 @@ impl Stemmer {
     /// Probably useful only for testing optimization
     pub fn empty() -> Self {
         Self {
-            dictionary: Dictionary::new()
+            dictionary: Dictionary::new(),
+            re_alphabet: Regex::new(r"[^a-z0-9 -]").unwrap(),
+            re_whitespaces: Regex::new(r"( +)").unwrap(),
+            re_plural: Regex::new(r"^(.*)-(ku|mu|nya|lah|kah|tah|pun)$").unwrap()
         }
     }
 
@@ -33,13 +40,9 @@ impl Stemmer {
     /// - `r"/[^a-z0-9 -]/im"`
     /// - `r"/( +)/im"`
     fn normalize_text(&self, text: String) -> String {
-        let alphabet_regex = Regex::new(r"[^a-z0-9 -]").unwrap();
-        let multiple_whitespace_regex = Regex::new(r"( +)").unwrap();
-
         let lowercase_text = text.to_lowercase();
-        let alphabet_only_result = alphabet_regex.replace_all(&lowercase_text, " ");
-        let multiple_whitespace_removed = multiple_whitespace_regex.replace_all(&alphabet_only_result, " ");
-
+        let alphabet_only_result = self.re_alphabet.replace_all(&lowercase_text, " ");
+        let multiple_whitespace_removed = self.re_whitespaces.replace_all(&alphabet_only_result, " ");
         multiple_whitespace_removed.trim().to_string()
     }
 }
