@@ -1,6 +1,6 @@
 use crate::dictionary::Dictionary;
 
-struct StopWordRemover {
+pub struct StopWordRemover {
     stop_word_dictionary: Dictionary,
 }
 
