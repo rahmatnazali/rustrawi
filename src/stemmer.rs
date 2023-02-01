@@ -70,7 +70,7 @@ impl Stemmer {
         let normalized_text = self.normalize_text(text);
         let words = normalized_text.split(" ");
 
-        let stemmed_words: Vec<&str> = words.into_iter().map(|word| {
+        let stemmed_words: Vec<String> = words.into_iter().map(|word| {
             if self.is_plural(word) {
                 self.stem_plural_word(word)
             } else {
@@ -158,9 +158,9 @@ mod stemmer_test {
     use super::*;
     
     #[test]
-    fn should_a() {
+    fn should_stem_word() {
         let stemmer = Stemmer::new();
-        let result = stemmer.stem(String::from("kucing, anjing, ayam"));
-        println!("{}", result);
+        let result = stemmer.stem(String::from("Membahagiakan"));
+        assert_eq!(result, "bahagia");
     }
 }
