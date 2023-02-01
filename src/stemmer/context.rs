@@ -63,10 +63,6 @@ impl<'a> Context<'a> {
         // todo: complete the logic here
     }
 
-    pub fn stop_process(&mut self) {
-        self.is_process_stopped = true;
-    }
-
     /// Returns the resulting word from stemming process
     pub fn get_resulting_word(&self) -> String {
         if self.result_word.is_some() {
