@@ -1,4 +1,5 @@
 use crate::dictionary::Dictionary;
+use crate::stemmer::confix_stripping::precedence_adjustment::PrecedenceAdjustment;
 use crate::stemmer::context::removal::{Removal};
 use crate::stemmer::context::visitor::{Visitor, VisitorResult};
 use crate::stemmer::context::visitor::dont_stem_short_word::DontStemShortWord;
@@ -58,7 +59,13 @@ impl<'a> Context<'a> {
             return;
         }
 
-        // todo!()
+        // Confix Stripping: trying to remove prefix before suffix if the specification is met
+        let precedence_adjustment = PrecedenceAdjustment::new();
+        if precedence_adjustment.is_satisfied_by(self.original_word) {
+            todo!("step 4, 5");
+            todo!("step 2, 3");
+        }
+
         // todo: complete the logic here
     }
 
