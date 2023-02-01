@@ -1,6 +1,6 @@
 use crate::dictionary::Dictionary;
 use crate::stemmer::context::removal::{Removal, RemovalTrait};
-use crate::stemmer::context::visitor::{Visitor, VisitorProvider};
+use crate::stemmer::context::visitor::{Visitor};
 
 pub mod removal;
 pub mod visitor;
