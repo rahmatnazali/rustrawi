@@ -53,6 +53,9 @@ impl<'a> Context<'a> {
                 VisitorResult::StopProcess => { self.is_process_stopped = true; },
                 VisitorResult::DoNothing => {}
             }
+            if !self.is_process_stopped {
+                break;
+            }
         }
 
         if self.dictionary.contains(&self.current_word) {
