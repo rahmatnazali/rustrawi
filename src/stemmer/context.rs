@@ -28,11 +28,7 @@ impl<'a> Context<'a> {
             result_word: None,
             is_process_stopped: false,
             dictionary,
-
             visitor_list,
-            // visitor_provider: VisitorProvider::new(),
-            // suffix_visitor_list: vec![],
-            // prefix_visitor_list: vec![],
             removal_list: vec![],
         }
     }
