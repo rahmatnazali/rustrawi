@@ -1,6 +1,7 @@
 use crate::dictionary::Dictionary;
 use crate::stemmer::context::removal::{Removal, RemovalTrait};
 use crate::stemmer::context::visitor::{Visitor};
+use crate::stemmer::context::visitor::dont_stem_short_word::DontStemShortWord;
 
 pub mod removal;
 pub mod visitor;
@@ -21,7 +22,8 @@ pub struct Context<'a> {
 impl<'a> Context<'a> {
     pub fn new(original_word: &'a str, dictionary: &'a Dictionary, visitor_list: Option<Vec<Box<dyn Visitor>>>) -> Self {
         let visitor_list = visitor_list.unwrap_or_else(|| vec![
-            todo!("add visitor list here according to the source code")
+            Box::new(DontStemShortWord),
+            // todo: add other visitor here
         ]);
         Self {
             original_word,
@@ -48,6 +50,10 @@ impl<'a> Context<'a> {
         }
 
         todo!()
+    }
+
+    pub fn stop_process(&mut self) {
+        self.is_process_stopped = true;
     }
 
     /// Returns the resulting word from stemming process
