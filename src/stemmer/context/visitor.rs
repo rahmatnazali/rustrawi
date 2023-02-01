@@ -12,7 +12,7 @@ pub enum VisitorType {
 #[derive(PartialEq, Debug)]
 pub enum VisitorResult {
     StopProcess,
-    None
+    DoNothing
 }
 
 pub trait Visitor {

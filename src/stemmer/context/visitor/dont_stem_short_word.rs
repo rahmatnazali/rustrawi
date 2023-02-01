@@ -12,7 +12,7 @@ impl Visitor for DontStemShortWord {
         if self.is_short_word(&(context.current_word)) {
             return VisitorResult::StopProcess
         }
-        VisitorResult::None
+        VisitorResult::DoNothing
     }
 }
 
@@ -61,12 +61,12 @@ mod dont_stem_short_word_test {
     }
 
     #[test]
-    fn long_word_should_return_none() {
+    fn long_word_should_return_do_nothing() {
         let dictionary = Dictionary::new();
         let mut context = Context::new("kambing", &dictionary, None);
 
         let object = DontStemShortWord;
         let result = object.visit(&context);
-        assert_eq!(result, VisitorResult::None);
+        assert_eq!(result, VisitorResult::DoNothing);
     }
 }

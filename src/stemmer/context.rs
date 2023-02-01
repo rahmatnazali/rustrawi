@@ -51,7 +51,7 @@ impl<'a> Context<'a> {
             let visitor_result: VisitorResult = visitor.visit(&self);
             match visitor_result {
                 VisitorResult::StopProcess => { self.is_process_stopped = true; },
-                VisitorResult::None => {}
+                VisitorResult::DoNothing => {}
             }
         }
 
