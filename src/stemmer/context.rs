@@ -1,6 +1,6 @@
 use crate::dictionary::Dictionary;
-use crate::stemmer::context::removal::{Removal, RemovalTrait};
-use crate::stemmer::context::visitor::{Visitor};
+use crate::stemmer::context::removal::{Removal};
+use crate::stemmer::context::visitor::{Visitor, VisitorResult};
 use crate::stemmer::context::visitor::dont_stem_short_word::DontStemShortWord;
 
 pub mod removal;
@@ -14,15 +14,12 @@ pub struct Context<'a> {
     removal_list: Vec<Removal>,
     dictionary: &'a Dictionary,
     visitor_list: Vec<Box<dyn Visitor>>,
-    // visitor_provider: VisitorProvider,
-    // suffix_visitor_list: Vec<usize>,
-    // prefix_visitor_list: Vec<usize>,
 }
 
 impl<'a> Context<'a> {
     pub fn new(original_word: &'a str, dictionary: &'a Dictionary, visitor_list: Option<Vec<Box<dyn Visitor>>>) -> Self {
         let visitor_list = visitor_list.unwrap_or_else(|| vec![
-            Box::new(DontStemShortWord),
+            Box::new(DontStemShortWord {}),
             // todo: add other visitor here
         ]);
         Self {
@@ -42,14 +39,28 @@ impl<'a> Context<'a> {
 
     /// Execute the stemming process.
     /// The result can then be retrieved with .get_result()
-    pub fn execute(&self) {
+    pub fn execute(&mut self) {
 
         // step 1
         if self.dictionary.contains(&self.current_word) {
             return;
         }
 
-        todo!()
+        // Iterate each visitor and run its modifier
+        for visitor in &(self.visitor_list) {
+            let visitor_result: VisitorResult = visitor.visit(&self);
+            match visitor_result {
+                VisitorResult::StopProcess => { self.is_process_stopped = true; },
+                VisitorResult::None => {}
+            }
+        }
+
+        if self.dictionary.contains(&self.current_word) {
+            return;
+        }
+
+        // todo!()
+        // todo: complete the logic here
     }
 
     pub fn stop_process(&mut self) {
@@ -64,5 +75,28 @@ impl<'a> Context<'a> {
         } else {
             panic!("Resulting word is being called before available")
         }
+    }
+}
+
+#[cfg(test)]
+mod context_test {
+    use super::*;
+
+    #[test]
+    fn should_stop_process_on_stop_process_result() {
+        let dictionary = Dictionary::new();
+        let mut context = Context::new("iya", &dictionary, None);
+        assert_eq!(context.is_process_stopped, false);
+        context.execute();
+        assert_eq!(context.is_process_stopped, true);
+    }
+
+    #[test]
+    fn should_not_stop_process_on_none_result() {
+        let dictionary = Dictionary::new();
+        let mut context = Context::new("ayam", &dictionary, None);
+        assert_eq!(context.is_process_stopped, false);
+        context.execute();
+        assert_eq!(context.is_process_stopped, false);
     }
 }

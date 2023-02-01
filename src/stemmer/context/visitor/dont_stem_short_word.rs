@@ -1,5 +1,5 @@
 use crate::stemmer::context::Context;
-use crate::stemmer::context::visitor::{Visitor, VisitorType};
+use crate::stemmer::context::visitor::{Visitor, VisitorResult, VisitorType};
 
 pub struct DontStemShortWord;
 
@@ -8,10 +8,11 @@ impl Visitor for DontStemShortWord {
         VisitorType::GeneralVisitor
     }
 
-    fn visit(&self, context: &mut Context) {
-        if self.is_short_word(&context.current_word) {
-            context.stop_process();
-        };
+    fn visit(&self, context: &Context) -> VisitorResult {
+        if self.is_short_word(&(context.current_word)) {
+            return VisitorResult::StopProcess
+        }
+        VisitorResult::None
     }
 }
 
@@ -50,24 +51,22 @@ mod dont_stem_short_word_test {
     }
 
     #[test]
-    fn short_word_should_stop_process() {
+    fn short_word_should_return_stop_process() {
         let dictionary = Dictionary::new();
         let mut context = Context::new("iya", &dictionary, None);
-        assert_eq!(context.is_process_stopped, false);
 
         let object = DontStemShortWord;
-        object.visit(&mut context);
-        assert_eq!(context.is_process_stopped, true);
+        let result = object.visit(&context);
+        assert_eq!(result, VisitorResult::StopProcess);
     }
 
     #[test]
-    fn long_word_should_not_stop_process() {
+    fn long_word_should_return_none() {
         let dictionary = Dictionary::new();
         let mut context = Context::new("kambing", &dictionary, None);
-        assert_eq!(context.is_process_stopped, false);
 
         let object = DontStemShortWord;
-        object.visit(&mut context);
-        assert_eq!(context.is_process_stopped, false);
+        let result = object.visit(&context);
+        assert_eq!(result, VisitorResult::None);
     }
 }

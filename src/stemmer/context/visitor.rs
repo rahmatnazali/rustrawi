@@ -9,7 +9,13 @@ pub enum VisitorType {
     SuffixVisitor,
 }
 
+#[derive(PartialEq, Debug)]
+pub enum VisitorResult {
+    StopProcess,
+    None
+}
+
 pub trait Visitor {
     fn get_visitor_type(&self) -> VisitorType;
-    fn visit(&self, context: &mut Context);
+    fn visit(&self, context: &Context) -> VisitorResult;
 }
