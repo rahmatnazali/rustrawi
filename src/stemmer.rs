@@ -156,9 +156,9 @@ mod stemmer_test {
     use super::*;
 
     #[test]
-    fn should_a() {
+    fn should_stem_word() {
         let stemmer = Stemmer::new();
-        let result = stemmer.stem(String::from("kucing, anjing, ayam"));
-        println!("{}", result);
+        let result = stemmer.stem(String::from("Membahagiakan"));
+        assert_eq!(result, "bahagia");
     }
 }
