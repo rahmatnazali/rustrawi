@@ -1,4 +1,5 @@
 pub mod context;
+pub mod confix_stripping;
 
 use regex::Regex;
 use crate::dictionary::Dictionary;
