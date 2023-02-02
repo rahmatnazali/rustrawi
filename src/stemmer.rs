@@ -86,7 +86,7 @@ impl Stemmer {
 
     /// Stem a plural word to its common stem form.
     ///
-    /// Example: `bersama-sama` to `sama
+    /// Example: `bersama-sama` to `sama`
     ///
     /// # Reference
     /// - Asian J. (2007) “Effective Techniques for Indonesian Text Retrieval” page 76-77.
