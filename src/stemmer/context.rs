@@ -1,7 +1,7 @@
 use crate::dictionary::Dictionary;
 use crate::stemmer::confix_stripping::precedence_adjustment::PrecedenceAdjustment;
 use crate::stemmer::context::removal::{Removal};
-use crate::stemmer::context::visitor::{Visitor, VisitorResult};
+use crate::stemmer::context::visitor::{Visitor, VisitorConfiguration, VisitorResult};
 use crate::stemmer::context::visitor::dont_stem_short_word::DontStemShortWord;
 
 pub mod removal;
@@ -14,22 +14,23 @@ pub struct Context<'a> {
     is_process_stopped: bool,
     removal_list: Vec<Removal>,
     dictionary: &'a Dictionary,
-    visitor_list: Vec<Box<dyn Visitor>>,
+    general_visitors: Vec<Box<dyn Visitor>>,
+    prefix_visitors: Vec<Box<dyn Visitor>>,
+    suffix_visitors: Vec<Box<dyn Visitor>>,
 }
 
 impl<'a> Context<'a> {
-    pub fn new(original_word: &'a str, dictionary: &'a Dictionary, visitor_list: Option<Vec<Box<dyn Visitor>>>) -> Self {
-        let visitor_list = visitor_list.unwrap_or_else(|| vec![
-            Box::new(DontStemShortWord {}),
-            // todo: add other visitor here
-        ]);
+    pub fn new(original_word: &'a str, dictionary: &'a Dictionary, visitor_configuration: Option<VisitorConfiguration>) -> Self {
+        let mut visitor_configuration = visitor_configuration.unwrap_or(VisitorConfiguration::default());
         Self {
             original_word,
             current_word: original_word.to_string(),
             result_word: None,
             is_process_stopped: false,
             dictionary,
-            visitor_list,
+            general_visitors: std::mem::replace(&mut visitor_configuration.general_visitors, Vec::new()),
+            prefix_visitors: std::mem::replace(&mut visitor_configuration.prefix_visitors, Vec::new()),
+            suffix_visitors: std::mem::replace(&mut visitor_configuration.suffix_visitors, Vec::new()),
             removal_list: vec![],
         }
     }
@@ -44,10 +45,10 @@ impl<'a> Context<'a> {
         }
 
         // Iterate each visitor and run its modifier
-        for visitor in &(self.visitor_list) {
+        for visitor in &(self.general_visitors) {
             let visitor_result: VisitorResult = visitor.visit(&self);
             match visitor_result {
-                VisitorResult::StopProcess => { self.is_process_stopped = true; },
+                VisitorResult::StopProcess => { self.is_process_stopped = true; }
                 VisitorResult::DoNothing => {}
             }
             if !self.is_process_stopped {
