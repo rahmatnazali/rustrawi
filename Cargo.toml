@@ -1,9 +1,9 @@
 [package]
 name = "rustrawi"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "Sastrawi on Rust"
+description = "Rust port of the original PHP Sastrawi"
 repository = "https://github.com/rahmatnazali/rustrawi"
 readme = "README.md"
 keywords = ["sastrawi", "stopword", "stem", "nlp", "tokenization"]
