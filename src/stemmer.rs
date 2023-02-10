@@ -84,6 +84,9 @@ impl Stemmer {
         stemmed_words.join(" ")
     }
 
+    /// Stem a singular word to its common stem form.
+    ///
+    /// Example: `mengalahkan` to `kalah`
     fn stem_singular_word(&self, word: &str) -> String {
         let mut context = Context::new(word, &self.dictionary, None);
         context.execute();
