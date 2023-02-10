@@ -1,10 +1,10 @@
 use crate::dictionary::Dictionary;
 use crate::stemmer::confix_stripping::precedence_adjustment::PrecedenceAdjustment;
-use crate::stemmer::context::removal::{Removal};
+// use crate::stemmer::context::removal::{Removal};
 use crate::stemmer::context::visitor::{Visitor, VisitorConfiguration, VisitorResult};
 use crate::stemmer::context::visitor::dont_stem_short_word::DontStemShortWord;
 
-pub mod removal;
+// pub mod removal;
 pub mod visitor;
 
 pub struct Context<'a> {
@@ -12,7 +12,7 @@ pub struct Context<'a> {
     current_word: String,
     result_word: Option<String>,
     is_process_stopped: bool,
-    removal_list: Vec<Removal>,
+    // removal_list: Vec<Removal>,
     dictionary: &'a Dictionary,
     general_visitors: Vec<Box<dyn Visitor>>,
     prefix_visitors: Vec<Box<dyn Visitor>>,
@@ -31,7 +31,7 @@ impl<'a> Context<'a> {
             general_visitors: std::mem::replace(&mut visitor_configuration.general_visitors, Vec::new()),
             prefix_visitors: std::mem::replace(&mut visitor_configuration.prefix_visitors, Vec::new()),
             suffix_visitors: std::mem::replace(&mut visitor_configuration.suffix_visitors, Vec::new()),
-            removal_list: vec![],
+            // removal_list: vec![],
         }
     }
 
