@@ -1,7 +1,8 @@
+use std::ops::Not;
 use crate::dictionary::Dictionary;
 use crate::stemmer::confix_stripping::precedence_adjustment::PrecedenceAdjustment;
 // use crate::stemmer::context::removal::{Removal};
-use crate::stemmer::context::visitor::{Visitor, VisitorConfiguration, VisitorResult};
+use crate::stemmer::context::visitor::{Visitor, VisitorConfiguration};
 use crate::stemmer::context::visitor::dont_stem_short_word::DontStemShortWord;
 
 // pub mod removal;
@@ -46,12 +47,20 @@ impl<'a> Context<'a> {
 
         // Iterate each visitor and run its modifier
         for visitor in &(self.general_visitors) {
-            let visitor_result: VisitorResult = visitor.visit(&self);
-            match visitor_result {
-                VisitorResult::StopProcess => { self.is_process_stopped = true; }
-                VisitorResult::DoNothing => {}
+            let optional_context_result = visitor.visit(&self);
+            if optional_context_result.is_some() {
+                let context_result = optional_context_result.unwrap();
+
+                if context_result.current_word.eq(&self.current_word).not() {
+                    self.current_word = context_result.current_word.clone()
+                }
+
+                if context_result.should_process_stop == true {
+                    self.is_process_stopped = true;
+                }
             }
-            if !self.is_process_stopped {
+
+            if self.is_process_stopped.not() {
                 break;
             }
         }

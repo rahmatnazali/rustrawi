@@ -84,12 +84,22 @@ impl Stemmer {
         stemmed_words.join(" ")
     }
 
+    /// Stem a singular word to its common stem form.
+    ///
+    /// Example: `mengalahkan` to `kalah`
     fn stem_singular_word(&self, word: &str) -> String {
         let mut context = Context::new(word, &self.dictionary, None);
         context.execute();
         context.get_resulting_word()
     }
 
+    /// Stem a plural word to its common stem form.
+    ///
+    /// Example: `bersama-sama` to `sama`
+    ///
+    /// # Reference
+    /// - Asian J. (2007) “Effective Techniques for Indonesian Text Retrieval” page 76-77.
+    /// - http://researchbank.rmit.edu.au/eserv/rmit:6312/Asian.pdf
     fn stem_plural_word(&self, word: &str) -> String {
         todo!()
     }
