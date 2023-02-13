@@ -8,11 +8,15 @@ impl Visitor for DontStemShortWord {
         VisitorType::GeneralVisitor
     }
 
-    fn visit(&self, context: &Context) -> VisitorResult {
+    fn visit<'a>(&'a self, context: &'a Context) -> Option<VisitorResult> {
         if self.is_short_word(&(context.current_word)) {
-            return VisitorResult::StopProcess
+            return Some(VisitorResult::stop_process(
+                context.original_word.clone().to_string(),
+                context.current_word.clone(),
+                None
+            ))
         }
-        VisitorResult::DoNothing
+        None
     }
 }
 
@@ -55,9 +59,12 @@ mod dont_stem_short_word_test {
         let dictionary = Dictionary::new();
         let mut context = Context::new("iya", &dictionary, None);
 
-        let object = DontStemShortWord;
-        let result = object.visit(&context);
-        assert_eq!(result, VisitorResult::StopProcess);
+        let object = DontStemShortWord {};
+        let optional_context_result = object.visit(&context);
+        assert_eq!(optional_context_result.is_some(), true);
+
+        let context_result = optional_context_result.unwrap();
+        assert_eq!(context_result.should_process_stop, true);
     }
 
     #[test]
@@ -65,8 +72,8 @@ mod dont_stem_short_word_test {
         let dictionary = Dictionary::new();
         let mut context = Context::new("kambing", &dictionary, None);
 
-        let object = DontStemShortWord;
-        let result = object.visit(&context);
-        assert_eq!(result, VisitorResult::DoNothing);
+        let object = DontStemShortWord {};
+        let optional_context_result = object.visit(&context);
+        assert_eq!(optional_context_result.is_none(), true);
     }
 }
