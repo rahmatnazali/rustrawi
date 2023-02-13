@@ -55,7 +55,7 @@ mod dont_stem_short_word_test {
     }
 
     #[test]
-    fn short_word_should_return_stop_process() {
+    fn short_word_should_return_result_with_stop_process() {
         let dictionary = Dictionary::new();
         let mut context = Context::new("iya", &dictionary, None);
 
@@ -68,7 +68,7 @@ mod dont_stem_short_word_test {
     }
 
     #[test]
-    fn long_word_should_return_do_nothing() {
+    fn long_word_should_not_return_visitor_result() {
         let dictionary = Dictionary::new();
         let mut context = Context::new("kambing", &dictionary, None);
 
